@@ -1,0 +1,60 @@
+name: Photos F-Droid preflight
+run-name: Photos F-Droid ${{ inputs.operation }} / ${{ inputs.request_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Capacity probe or complete pinned preflight
+        type: choice
+        options: [probe, preflight]
+        default: probe
+        required: true
+      request_id:
+        description: Unique monitoring request identifier
+        type: string
+        default: manual
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: photos-fdroid-preflight
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ inputs.operation == 'probe' && 30 || 360 }}
+    env:
+      REQUEST_ID: ${{ inputs.request_id }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Check capacity and pinned image
+        run: bash scripts/capacity.sh
+      - name: Build the pinned F-Droid recipe
+        if: inputs.operation == 'preflight'
+        run: bash scripts/build.sh
+      - name: Save reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: reports-${{ inputs.operation }}-${{ github.run_id }}
+          path: |
+            diagnostics/
+            builder/preflight-results/
+          if-no-files-found: warn
+          compression-level: 1
+          retention-days: 7
+      - name: Save APK
+        if: success() && inputs.operation == 'preflight'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: apk-${{ github.run_id }}
+          path: builder/tmp/*.apk
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
