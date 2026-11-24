@@ -22,11 +22,12 @@ assert m["gitlab_repository"] == "https://gitlab.com/ashilkn99/fdroiddata.git"
 assert re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", m["version_name"])
 assert isinstance(m["version_code"], int) and m["version_code"] > 0
 assert m["no_tarball"] is True
-for key in ["gitlab_repository", "gitlab_commit", "image", "fdroidserver_commit", "source_sha", "version_name", "version_code", "selected_metadata_sha256"]:
+assert re.fullmatch(r"[A-Za-z0-9_/-]+", m["gitlab_branch"])
+for key in ["gitlab_repository", "gitlab_commit", "image", "fdroidserver_commit", "source_sha", "version_name", "version_code", "selected_metadata_sha256", "gitlab_branch"]:
     print(m[key])
 PY
 )
-[[ ${#parameters[@]} == 8 ]]
+[[ ${#parameters[@]} == 9 ]]
 repository=${parameters[0]}
 recipe=${parameters[1]}
 image=${parameters[2]}
@@ -35,6 +36,7 @@ source_sha=${parameters[4]}
 version_name=${parameters[5]}
 version_code=${parameters[6]}
 selected_hash=${parameters[7]}
+recipe_branch=${parameters[8]}
 
 git init builder
 git -C builder remote add origin "$repository"
@@ -85,7 +87,7 @@ timeout --signal=TERM --kill-after=120s "${remaining}s" \
     --cidfile "$PWD/diagnostics/build.cid" \
     --volume "$PWD/builder:/workspace/fdroiddata" --workdir /workspace/fdroiddata \
     --env CI_PROJECT_PATH=ashilkn99/fdroiddata \
-    --env CI_COMMIT_BRANCH=codex/ente-photos-fdroid-preflight \
+    --env "CI_COMMIT_BRANCH=$recipe_branch" \
     --env CI_PIPELINE_SOURCE=api --env CI_PROJECT_DIR=/workspace/fdroiddata \
     --env "CI_COMMIT_SHA=$recipe" --env "CI_JOB_IMAGE=$image" \
     --env PREFLIGHT_CASE=candidate --env NO_TARBALL=true \
