@@ -1,6 +1,6 @@
 {
   "gitlab_repository": "https://gitlab.com/ashilkn99/fdroiddata.git",
-  "gitlab_commit": "86c24a7c9aa2d5548213304ec848ab433b806e44",
+  "gitlab_commit": "867ca29c1a255de057d02ff144875d1f3cc8c77c",
   "gitlab_branch": "codex/ente-ort-source-preflight",
   "image": "registry.gitlab.com/fdroid/fdroidserver@sha256:1ea8bef1820bff06c2974e31b4fc4c79c364cd24231b86e71fa4b926797e0dac",
   "fdroidserver_commit": "fc2c86473e66a44fc641f403c338a8b2cccfad88",
@@ -18,7 +18,7 @@
     "preflight/candidate.yml": "79167ca566fb82f9a1b916bd5526c0ec7c5856f6e00e16ceb66e6faea60d9911",
     "preflight/observe.py": "464f3c68192ed93ee23ad69721882169a886b28bd77d3265d719c540b6b3ed62",
     "preflight/prepare.py": "b20eb8c67b1fa4a64d8918cd24f19940db09dd69c716fee9fd4e7adc73e99b4e",
-    "preflight/run.sh": "fd84bcfca9e235ca2bc1595877fb5a5360ac20b04e90d3b113d398338c10b677",
+    "preflight/run.sh": "67e7479834446561dd362294d14378981e5c2cff4d884bf3d08adc335be05fa7",
     "srclibs/ente-onnxruntime.yml": "356b59c3661e01fb7612ccaf5512c06fd0d69a407b0622db74c9c9eb57979787",
     "srclibs/ffmpeg-packaging.yml": "433bfb7ab2f258ebfa9be3f04ac5961a908a608162f18b9dfbc4028abdf2edee",
     "srclibs/flutter.yml": "6614cf2f820f785b42db243f2660a960bc15bb4cbe5c17309a6bb7891d7405be",
